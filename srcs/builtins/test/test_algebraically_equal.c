@@ -1,27 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   shell_var.c                                        :+:      :+:    :+:   */
+/*   test_algebraically_equal.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ezonda <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: jebrocho <jebrocho@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/03/01 12:19:58 by ezonda            #+#    #+#             */
-/*   Updated: 2020/03/01 17:11:29 by ezonda           ###   ########.fr       */
+/*   Created: 2018/11/06 20:28:36 by jebrocho          #+#    #+#             */
+/*   Updated: 2018/11/13 12:52:15 by jebrocho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_isalnum_str(char *str)
+int		test_algebraically_equal(char *s1, char *s2)
 {
-	int i;
+	int	i1;
+	int	i2;
 
-	i = 0;
-	while (str[i])
-	{
-		if (!ft_isalnum(str[i]))
-			return (0);
-		i++;
-	}
+	i1 = ft_atoi(s1);
+	i2 = ft_atoi(s2);
+	if (i1 == i2)
+		return (0);
 	return (1);
 }

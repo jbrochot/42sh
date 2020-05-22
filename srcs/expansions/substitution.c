@@ -17,10 +17,11 @@
 
 char	*exec_substitution(char *tmp)
 {
-	char *nw;
+	char *nw = NULL;
 
 	nw = substitution_wrapper(tmp);
 	nw = ft_strtrimf(nw);
+
 	return (nw);
 }
 
