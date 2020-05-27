@@ -15,6 +15,13 @@
 #include "libft.h"
 #include "ft_printf.h"
 
+void free_realloc_alias(char *name_g, char *name, char *value)
+{
+	free(name_g);
+	free(name);
+	free(value);
+}
+
 int		unalias_error(int mod, char *arg)
 {
 	if (mod == 0)
@@ -45,12 +52,13 @@ int		del_all(void)
 	return (0);
 }
 
-int		del_alias(char *arg)
+int		del_alias(char *arg, char ***env)
 {
 	int		cpt;
 	char	*name;
 
 	cpt = -1;
+	(void)env;
 	while (g_alias[++cpt])
 	{
 		name = get_name(g_alias[cpt]);
@@ -87,10 +95,9 @@ int		ft_unalias(char **args, char ***env)
 		if (ft_strcmp("--", args[cpt]) == 0 || cpt == 1)
 			opt = 1;
 		if (opt == 1)
-			unalias_error(del_alias(args[cpt]), args[cpt]);
+			unalias_error(del_alias(args[cpt], env), args[cpt]);
 	}
 	if (ft_tablen(g_alias) == 0)
 		g_alias = NULL;
-	(void)env;
 	return (0);
 }

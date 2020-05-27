@@ -14,7 +14,7 @@
 #include "ft_printf.h"
 #include "sh.h"
 
-static char		*change_path(char *arg)
+static char		*change_test_path(char *arg)
 {
 	char *pwd;
 
@@ -31,7 +31,7 @@ char			*apply_path(char *arg)
 	if (arg[0] == '/')
 		return (arg);
 	else
-		arg = change_path(arg);
+		arg = change_test_path(arg);
 	return (arg);
 }
 
@@ -59,11 +59,7 @@ int				init_integer(char **args, size_t p_size)
 int				simple_operand(char **args)
 {
 	if (ft_strlen(args[1]) == 0)
-	{
-		ft_printf("simple | false\n");
 		return (1);
-	}
-	ft_printf("simple | true\n");
 	return (0);
 }
 

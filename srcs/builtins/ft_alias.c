@@ -91,9 +91,7 @@ void		realloc_alias(char *arg)
 		if (ft_strcmp(name, name_g) == 0)
 		{
 			ft_edit_env(g_alias, name, value);
-			free(name_g);
-			free(name);
-			free(value);
+			free_realloc_alias(name_g, name, value);
 			return ;
 		}
 		free(name_g);

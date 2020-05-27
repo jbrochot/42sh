@@ -30,7 +30,6 @@ const s_builtins g_builtins[] =
   {"setenv", ft_setenv},
   {"take", ft_take},
   {"unsetenv", ft_unsetenv},
-  {"djob", ft_debug_job},
   {"return", ft_return},
   {"set", ft_set},
   {"unset", ft_unset},
@@ -38,6 +37,9 @@ const s_builtins g_builtins[] =
   {"alias", ft_alias},
   {"unalias", ft_unalias},
   {"test", ft_test},
+  {"bg", ft_bg},
+  {"jobs", ft_jobs},
+  {"fg", ft_fg},
   {NULL, NULL}
 };
 
