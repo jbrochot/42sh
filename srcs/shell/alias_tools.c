@@ -112,11 +112,15 @@ int 	check_for_replace(char *arg)
 	if (name)
 	{
 		cpt = ft_strlen(name);
-		if (name[cpt - 1] == ' ')
+		if (cpt > 0)
 		{
-			free(name);
-			return (0);
+			if (name[cpt - 1] == ' ')
+			{
+				free(name);
+				return (0);
+			}
 		}
+		free(name);
 	}
 	return (1);
 }

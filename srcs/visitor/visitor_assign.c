@@ -16,7 +16,32 @@
 #include "ligne.h"
 #include "exec.h"
 #include "builtins.h"
+#include "expansions.h"
 #include "ft_printf.h"
+
+void			assign_var(char *data, char *value, int mod)
+{
+	char	*item;
+	char	*expand;
+
+	item = data;
+	expand = ft_strdup(value);
+	if (value[0] == '$')
+		process_expression(&expand);
+	if (!mod)
+	{
+		add_set(item, expand);
+		if (!ft_strcmp(item, "HOME"))
+			if (!ft_edit_env(g_env, item, expand))
+				g_env = add_env(g_env, item, expand);
+	}
+	else
+	{
+		if (!ft_edit_env(g_env, item, expand))
+			g_env = add_env(g_env, item, expand);
+	}
+	free(expand);
+}
 
 static int		is_only_assign(char *data, char **args)
 {
@@ -41,6 +66,7 @@ static int		visitor_assign_exec(t_sh *sh, char *item, char *old_value,
 	process_sh(sh);
 	if (!ft_edit_env(g_env, item, old_value))
 		g_env = add_env(g_env, item, old_value);
+	add_set(item, old_value);
 	free(old_value);
 	free(data);
 	free_sh(sh);
@@ -66,7 +92,6 @@ static char		*get_temp_input(char **args)
 static int		visit_assign_temp(char *data, char **args)
 {
 	t_sh	sh;
-	char	*item;
 	char	*value;
 	char	*old_value;
 
@@ -83,13 +108,11 @@ static int		visit_assign_temp(char *data, char **args)
 		{
 			value[0] = '\0';
 			value = &value[1];
-			item = data;
-			old_value = ft_strdup(get_env(g_set, item));
-			if (!ft_edit_env(g_env, item, value))
-				g_env = add_env(g_env, item, value);
+			old_value = ft_strdup(get_env(g_set, data));
+			assign_var(data, value, 1);
 		}
 	}
-	return (visitor_assign_exec(&sh, item, old_value, data));
+	return (visitor_assign_exec(&sh, data, old_value, data));
 }
 
 int				visit_assign_multi(char *data, char **args)
@@ -97,6 +120,7 @@ int				visit_assign_multi(char *data, char **args)
 	int		i;
 	char	*value;
 	char	*item;
+	char	*expand;
 
 	i = 0;
 	while (args[i])
@@ -108,7 +132,11 @@ int				visit_assign_multi(char *data, char **args)
 				value[0] = '\0';
 				value = &value[1];
 				item = args[i];
-				add_set(item, value);
+				expand = ft_strdup(value);
+				if (value[0] == '$')
+					process_expression(&expand);
+				add_set(item, expand);
+				free(expand);
 			}
 		}
 		i++;
@@ -119,7 +147,6 @@ int				visit_assign_multi(char *data, char **args)
 
 int				visit_assign_word(t_node *node, t_io_lists io, t_job **job)
 {
-	char	*item;
 	char	*value;
 	char	*data;
 
@@ -136,8 +163,7 @@ int				visit_assign_word(t_node *node, t_io_lists io, t_job **job)
 		{
 			value[0] = '\0';
 			value = &value[1];
-			item = data;
-			add_set(item, value);
+			assign_var(data, value, 0);
 			free(data);
 			return (0);
 		}
